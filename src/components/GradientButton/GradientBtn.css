@@ -1,0 +1,9 @@
+.gradient-btn {
+  font-family: Montserrat, sans-serif;
+  font-weight: 900;
+  color: white;
+  background: linear-gradient(135deg, #ffaa85 0%, #b3315f 100%);
+  border-radius: 0.4rem;
+  padding: 0.7rem 1rem;
+  min-width: 13rem;
+}
