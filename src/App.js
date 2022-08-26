@@ -13,8 +13,8 @@ function App() {
     >
       <Navbar />
       <div className={"main-container"}>
+        <div className={'gradient-underlay'} />
         <MintNFTForm />
-          <MintedNFT title={'#01'} />
       </div>
     </div>
   );
