@@ -2,9 +2,12 @@ import "./nftFormStyles.scss";
 import GradientButton from "../GradientButton";
 import {AiOutlinePlusSquare} from 'react-icons/ai'
 import {useRef, useState} from "react";
-
+import ethers from 'ethers';
 // UTILS
 import {PinFilesToIPFS} from '../../utils/pinFilesToIPFS'
+import {contracts} from "../../configs";
+// import {ContractInstance} from "../../utils/contracts";
+// import {contracts} from "../../configs";
 
 const MintNFTForm = () => {
 
@@ -52,7 +55,34 @@ const MintNFTForm = () => {
           metadata_formData.append('file', metadataBlob, title);
 
           const metadataUploadResut = await PinFilesToIPFS(metadata_formData);
-          console.log(metadataUploadResut.data?.IpfsHash);
+          // console.log(metadataUploadResut.data?.IpfsHash);
+
+          const ethers = require('ethers')
+          const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
+          const signer = provider.getSigner();
+
+          const contract = new ethers.Contract(
+              contracts[0].address,
+              contracts[0].abi,
+              signer
+          )
+          const accounts = await window.ethereum.request({
+              method: 'eth_requestAccounts'
+          });
+
+          const txn = await contract.mint(
+              accounts[0],
+              4,
+              `ipfs://${metadataUploadResut.data?.IpfsHash}`
+          )
+
+          setImage({
+              preview: '',
+              raw: null
+          });
+          setTitle('');
+          setDescription('')
+          alert('Mint success')
 
       } catch (err) {
           console.log(err)
