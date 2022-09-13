@@ -2,7 +2,7 @@ import "./nftFormStyles.scss";
 import GradientButton from "../GradientButton";
 import {AiOutlinePlusSquare} from 'react-icons/ai'
 import {useRef, useState} from "react";
-import ethers from 'ethers';
+import ethers, {BigNumber} from 'ethers';
 // UTILS
 import {PinFilesToIPFS} from '../../utils/pinFilesToIPFS'
 import {contracts} from "../../configs";
@@ -70,9 +70,12 @@ const MintNFTForm = () => {
               method: 'eth_requestAccounts'
           });
 
+          const totalSupply = await contract.totalSupply();
+          const currentTokenId = BigNumber.from(totalSupply).add(1).toString()
+
           const txn = await contract.mint(
               accounts[0],
-              4,
+              currentTokenId,
               `ipfs://${metadataUploadResut.data?.IpfsHash}`
           )
 
